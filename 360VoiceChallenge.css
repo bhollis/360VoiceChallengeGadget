@@ -1,0 +1,94 @@
+/*
+	Copyright 2007 Benjamin Hollis
+	See license.txt for additional license information.
+*/
+body { 
+	font-family: 'Segoe UI', Tahoma, Verdana, Arial, sans-serif;
+	font-size: 9pt;
+	width:131px;
+  height: 300px;
+	padding: 0;
+	margin: 0;
+  color: white;
+  background-color: black;
+}
+
+#container {  
+/*
+  position: absolute;
+  width: 111px;
+  top: 5px;
+  left: 5px;
+  z-index: 1000;
+  */
+  margin-left: 5px;
+  width: 121px;
+}
+
+#debug {
+	z-index: 1000;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+  background: red;
+}
+
+#timer {
+  text-align: center;
+  font-size: 14px;
+  background: url(images/timer.png) center center no-repeat;
+  height: 20px;
+  width: 115px;
+  margin: 8px 0 5px 3px;
+  z-index: 800;
+}
+
+.time {
+  font-weight: bold;  
+}
+
+#standings {
+  border-collapse: collapse;
+  width: 121px;
+}
+
+#standings .info td {
+  /*background: url(images/separator.png) bottom center no-repeat;*/
+  border-bottom: 1px solid #777D83;
+  line-height: 11px;
+  font-size: 11px;
+  text-align: right;
+  padding: 0 0 3px 0;
+}
+
+#standings td {
+  padding: 0;  
+}
+
+#standings .gamertag {
+  line-height: 12px;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 3px 0 1px 4px;
+}
+
+#standings .info .score {
+  padding-left: 4px;
+  width: 1%;
+}
+
+#standings .info .emblem {
+  padding-left: 2px;
+  width: 1%;
+}
+
+#standings .info .livescore {
+  color: #2EF38C;
+  font-weight: bold;
+  padding-right: 8px;
+  width: 5%;
+}
+
+#standings .last td {
+  border: none;
+}
