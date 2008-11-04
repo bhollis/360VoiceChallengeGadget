@@ -35,9 +35,10 @@ body {
 
 #timer {
   text-align: center;
-  font-size: 14px;
+  font-size: 12px;
+  padding-top: 2px;
   background: url(images/timer.png) center center no-repeat;
-  height: 20px;
+  height: 18px;
   width: 115px;
   margin: 8px 0 5px 3px;
   z-index: 800;
@@ -45,6 +46,30 @@ body {
 
 .time {
   font-weight: bold;  
+}
+
+#timer a {
+  color: white;
+  text-decoration: none;
+}
+#timer a:hover {
+  text-decoration: underline;
+}
+#timer.over {
+  background-image: url(images/timer_over.png);
+}
+#timer.finishing {
+  background-image: url(images/timer_finishing.png);
+}
+
+#timer .old {
+  display: none;
+}
+#timer.over .old {
+  display: inline;
+}
+#timer.over .current {
+  display: none;
 }
 
 #standings {
@@ -71,6 +96,18 @@ body {
   font-weight: bold;
   padding: 3px 0 1px 4px;
 }
+#standings .gamertag a {
+  color: white;
+  text-decoration: none;
+}
+
+#standings .gamertag a.selected {
+  color: #C8E3F7;
+  text-decoration: underline;
+}
+#standings .gamertag a:hover {
+  text-decoration: underline;
+}
 
 #standings .info .score {
   padding-left: 4px;
@@ -91,4 +128,9 @@ body {
 
 #standings .last td {
   border: none;
+}
+
+#loading, #noChallenges {
+  text-align: center;
+  margin: 1em 0;
 }

@@ -1,0 +1,7 @@
+timer turns red <12h left
+timer turns grey after challenge
+loading screen
+crown only after winner
+
+show the gamer card when you click
+update standings at midnight (around then at least, update live score on the hour?)

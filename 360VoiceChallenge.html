@@ -3,7 +3,9 @@
 <head>
 	<title>360Voice.com Challenge</title>
 	<link type="text/css" href="360VoiceChallenge.css" rel="stylesheet">
-	<script type="text/javascript" src="jquery-1.2.6.min.js"></script>	
+	<script type="text/javascript" src="lib/jquery-1.2.6.min.js"></script>	
+	<script type="text/javascript" src="lib/chain-0.2.js"></script>	
+	<script type="text/javascript" src="lib/json2.js"></script>	
 	<script type="text/javascript" src="360VoiceChallenge.js"></script>	
 	<!--
 		Copyright 2008 Benjamin Hollis
@@ -12,72 +14,22 @@
 </head>
 <body onload="init()">
   <g:background id="bg" src="images/trans.png" style="position:absolute;top:0;left:0;width:130px;height:1000px;z-index:-999" />
-  <!--
-    <div id="background">
-      <img src="images/bg_top.png">
-      <img src="images/bg_middle.png">
-      <img src="images/bg_bottom.png">    
-    </div>
-    -->
   <div id="debug"></div>
   <div id="container">
+    <div id="loading">Loading...</div>
+    <div id="noChallenges">You have not participated in any challenges.</div>
     <div id="timer">
-      Time Left: <span class="time">4d 8h</span>
+      <span class="current"><a href="#">Time Left: <span class="time">??</span></a></span>
+      <span class="old"><a href="#">Ended: <span class="time">??</span></a></span>
     </div>
     <table id="standings">
       <tr>
-        <td class="gamertag" colspan="3">
-          General Maximus
-        </td>
+        <td class="gamertag" colspan="3"></td>
       </tr>
       <tr class="info">
-        <td class="score">1,608</td>
-        <td class="emblem"><img src="images/crown.png"></td>
-        <td class="livescore">+370</td>
-      </tr>
-      
-      <tr>
-        <td class="gamertag" colspan="3">
-          Vid Boi
-        </td>
-      </tr>
-      <tr class="info">
-        <td class="score">1,226</td>
+        <td class="score"></td>
         <td class="emblem"></td>
         <td class="livescore"></td>
-      </tr>
-      
-      <tr>
-        <td class="gamertag" colspan="3">
-          DoomKeeper83
-        </td>
-      </tr>
-      <tr class="info">
-        <td class="score">976</td>
-        <td class="emblem"></td>
-        <td class="livescore">+150</td>
-      </tr>
-      
-      <tr>
-        <td class="gamertag" colspan="3">
-          CognizantPond
-        </td>
-      </tr>
-      <tr class="info">
-        <td class="score">456</td>
-        <td class="emblem"></td>
-        <td class="livescore">+60</td>
-      </tr>
-      
-      <tr>
-        <td class="gamertag" colspan="3">
-          LogicalZoombini
-        </td>
-      </tr>
-      <tr class="info last">
-        <td class="score">415</td>
-        <td class="emblem"></td>
-        <td class="livescore">+5</td>
       </tr>
     </table>
   </div>
