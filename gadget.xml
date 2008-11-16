@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <gadget>
-    <name>360Voice.com Challenge</name>
+    <name>360Voice.com Challenges</name>
     <namespace>Brh.Gadgets</namespace>
     <version>1.0</version>
     <author name="Benjamin Hollis">

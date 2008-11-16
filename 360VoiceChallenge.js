@@ -21,7 +21,6 @@ function init() {
         
     updateBackground();
     
-    // TODO: Get this working
     System.Gadget.Flyout.file = "Gamercard.html";
     System.Gadget.Flyout.onShow = setupFlyout;
     System.Gadget.Flyout.onHide = hideFlyout;
@@ -53,15 +52,18 @@ function updateTimeLeft() {
   
   var diff = endDate.getTime() - nowMs;
   
+  // If it's in the past...
   if (diff < 0) {
     $('#timer')
-      .removeClass('finishing')
+      .removeClass('finishing pending')
       .addClass('over')
-      .find('.time').text(window.endDate);
+      .find('.time').text(window.endDate).end()
+      .find('.label').text('Ended');
     
     return false;
   } else {
-    $('#timer').removeClass('over');
+    $('#timer').removeClass('over pending')
+      .find('.label').text('Time Left');
   }
   
   var days = Math.floor(diff / DAY);
@@ -111,82 +113,103 @@ function checkUpdateStandings() {
   });  
 }
 
+function scheduleDailyStandingsUpdate() {
+  // Schedule an update check again at 5AM PST
+  var now = new Date();
+  
+  // If it's less than 5AM PST
+  if ( now.getUTCHours() < 13 ) {
+    timeToUpdate = new Date(now.getTime());
+  } else {
+    timeToUpdate = new Date(now.getTime() + DAY);
+  }
+  timeToUpdate.setUTCHours(13, 0, 0, 0);
+  
+  var msToUpdate = timeToUpdate.getTime() - now.getTime();
+	setTimeout("checkUpdateStandings()", msToUpdate);
+}
+
 // Get the new standings. This will retry every minute until it works.
 function updateStandings() {
   clearTimeout(window.updateStandingsTimer);
   window.updateStandingsTimer = setTimeout('updateStandings()', MINUTE);
 
   $.ajax({
-    url: 'http://www.360voice.com/api/challenge-details.asp?tag=' + window.gamertag,
+    url: 'http://www.360voice.com/api/challenge-details.asp?tag=' + encodeURIComponent(window.gamertag),
     dataType: 'xml',
     cache: false,
     timeout: 30 * SECOND,
     success: function(data) {
+      clearTimeout(window.updateStandingsTimer);
+      clearLiveScoreIntervals();
+
       window.challengeId = parseInt($('challengeid', data).text());
       
       $('#loading').hide();
       
+      // This means the gamertag was invalid (probably) - we won't update again until it changes.
       if ( $('error', data).text().indexOf('Invalid:') >= 0) {
         window.challengeId = null;
-        clearLiveScoreIntervals();
         $('#noChallenges').show();
         $('#standings, #timer').hide();
         updateBackground();
         return;
-      } else {
-        $('#noChallenges').hide();
-        $('#standings, #timer').show();        
-      }
-      
-      clearTimeout(window.updateStandingsTimer);
+      } 
+        
+      $('#noChallenges, #pendingChallenge').hide();
+      $('#standings, #timer').show();
 
+      // TODO: move this into updateTimeLeft?
       // Really? Not the previous day?
       window.endDate = $('end', data).text();
       
+      // Figure out if we're in a pending challenge
+      var startDateString = $('start', data).text();
+      if ( ! startDateString || new Date(startDateString + ' 00:00:00 PST').getTime() > (new Date()).getTime() || ! window.endDate ) {
+          $('#pendingChallenge').show();
+          $('#standings').hide();       
+          $('#timer')
+            .removeClass('over finishing')
+            .addClass('pending')
+            .find('.time')
+              .text(startDateString || '??/??/????')
+            .end()
+            .find('.label')
+              .text('Starts on')
+            .end();
+          updateBackground();
+                        
+          if ( startDateString ) {
+            // TODO: Maybe it starts at midnight even if it hasn't processed the starting scores?
+            scheduleDailyStandingsUpdate();            
+          } else {            
+            // Check again in an hour to see if the challenge has launched
+            window.updateStandingsTimer = setTimeout('updateStandings()', HOUR);
+          }
+          return;
+      }
+      
       var stillGoing = updateTimeLeft();
       
-      var gamers = [];
       var gamers = $('gamer', data).map(function() {
         return {
           gamertag: $('tag', this).text(),
           score: parseInt($('totalgain', this).text()),
-          dailygs: parseInt($('dailygs', this).text())
+          dailygs: parseInt($('dailygs', this).text()),
+          place: parseInt($('place', this).text())
         };
       }).get();
       
       window.gamers = gamers;
       
       updateGamerList();
-      
-      if( ! stillGoing ) {
-        $('#standings .info:first .emblem').append(
-          $('<img/>').attr({
-            src: 'images/crown.png'
-          })
-        );
-      } else {
-        $('#standings .info:first .emblem').empty();
-      }
-      
-      updateBackground();
-      
-      // Schedule an update check again at 5AM PST
-      var now = new Date();
-      
-      // If it's less than 5AM PST
-      if ( now.getUTCHours() < 13 ) {
-        timeToUpdate = now;
-      } else {
-        timeToUpdate = new Date(now.getTime() + DAY);
-      }
-      timeToUpdate.setUTCHours(13, 0, 0, 0);
-      
-      var msToUpdate = timeToUpdate.getTime() - now.getTime();
-  		setTimeout("checkUpdateStandings()", msToUpdate); 		
-
-      clearLiveScoreIntervals();
+            
+      updateBackground();      
+      scheduleDailyStandingsUpdate();
 
       if (stillGoing) {
+        // TODO: use a class instead of emptying?
+        $('#standings .info:first .emblem').empty();
         kickOffLiveScoreUpdates(gamers);
       }
     }
@@ -224,7 +247,14 @@ function updateGamerList() {
         }
       },
       '.score': '{score}',
-      '.gamertag': '<a href="#">{gamertag}</a>'
+      '.gamertag': '<a href="#">{gamertag}</a>',
+      '.emblem': function(data, elem) {
+        if ( data.place == 1 ) {
+          return '<img src="images/crown.png" />';
+        } else {
+          return '';
+        }
+      }
     })
     .find('.gamertag a')
       .click(handleGamerClick)
@@ -255,14 +285,17 @@ function kickOffLiveScoreUpdates(gamers) {
 // Every hour. If it fails it'll just get run next hour.
 function updateLiveScore(gamer) {
   $.ajax({
-    url: 'http://duncanmackenzie.net/services/GetXboxInfo.aspx?GamerTag=' + gamer.gamertag,
+    url: 'http://duncanmackenzie.net/services/GetXboxInfo.aspx?GamerTag=' + encodeURIComponent(gamer.gamertag),
     cache: false,
     dataType: 'xml',
     timeout: 30 * SECOND,
     success: function (data) {
       var score = parseInt($('XboxInfo > GamerScore', data).text());
       gamer.livescore = score - gamer.dailygs;
-      updateGamerList();
+      
+      if (gamer.livescore > 0) {
+        updateGamerList();
+      }
     }
   });
 }
@@ -291,7 +324,7 @@ function setupFlyout() {
   if(System.Gadget.Flyout.show) {
     var flyoutDoc = System.Gadget.Flyout.document;    
 		var gamercard = flyoutDoc.getElementById("gamercard");
-		gamercard.src = "http://gamercard.xbox.com/" + window.selectedGamertag + ".card";
+		gamercard.src = "http://gamercard.xbox.com/" + encodeURIComponent(window.selectedGamertag) + ".card";
   }
 }
 
@@ -303,7 +336,7 @@ function hideFlyout() {
 function reset() {
 	try {
     $('#loading').show();
-    $('#standings, #timer, #noChallenges').hide();
+    $('#standings, #timer, #noChallenges, #pendingChallenge').hide();
     updateBackground();
     
 		// Refresh    

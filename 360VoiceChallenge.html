@@ -16,12 +16,12 @@
   <g:background id="bg" src="images/trans.png" style="position:absolute;top:0;left:0;width:130px;height:1000px;z-index:-999" />
   <div id="debug"></div>
   <div id="container">
-    <div id="loading">Loading...</div>
-    <div id="noChallenges">You have not participated in any challenges.</div>
+    <div class="message" id="loading">Loading...</div>
+    <div class="message" id="noChallenges">You have not participated in any challenges.</div>    
     <div id="timer">
-      <span class="current"><a href="#">Time Left: <span class="time">??</span></a></span>
-      <span class="old"><a href="#">Ended: <span class="time">??</span></a></span>
-    </div>
+      <a href="#"><span class="label">Time Left</span>: <span class="time">??</span></a>
+    </div>    
+    <div class="message" id="pendingChallenge">You've joined a challenge that hasn't launched yet.</div>
     <table id="standings">
       <tr>
         <td class="gamertag" colspan="3"></td>

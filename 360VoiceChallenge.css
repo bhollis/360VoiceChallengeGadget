@@ -55,21 +55,11 @@ body {
 #timer a:hover {
   text-decoration: underline;
 }
-#timer.over {
+#timer.over, #timer.pending {
   background-image: url(images/timer_over.png);
 }
 #timer.finishing {
   background-image: url(images/timer_finishing.png);
-}
-
-#timer .old {
-  display: none;
-}
-#timer.over .old {
-  display: inline;
-}
-#timer.over .current {
-  display: none;
 }
 
 #standings {
@@ -122,7 +112,7 @@ body {
 #standings .info .livescore {
   color: #2EF38C;
   font-weight: bold;
-  padding-right: 8px;
+  padding-right: 5px;
   width: 5%;
 }
 
@@ -130,7 +120,7 @@ body {
   border: none;
 }
 
-#loading, #noChallenges {
+.message {
   text-align: center;
   margin: 1em 0;
 }
