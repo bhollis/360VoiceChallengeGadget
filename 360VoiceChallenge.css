@@ -14,13 +14,6 @@ body {
 }
 
 #container {  
-/*
-  position: absolute;
-  width: 111px;
-  top: 5px;
-  left: 5px;
-  z-index: 1000;
-  */
   margin-left: 5px;
   width: 121px;
 }
@@ -68,7 +61,6 @@ body {
 }
 
 #standings .info td {
-  /*background: url(images/separator.png) bottom center no-repeat;*/
   border-bottom: 1px solid #777D83;
   line-height: 11px;
   font-size: 11px;
