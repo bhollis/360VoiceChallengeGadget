@@ -109,6 +109,11 @@ body {
   width: 1%;
 }
 
+#standings.stillGoing .info .emblem {
+  display: none;
+}
+
+
 #standings .info .livescore {
   color: #2EF38C;
   font-weight: bold;

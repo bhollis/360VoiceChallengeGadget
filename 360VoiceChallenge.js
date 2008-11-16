@@ -175,13 +175,14 @@ function updateStandings() {
               .text(startDateString || '??/??/????')
             .end()
             .find('.label')
-              .text('Starts on')
+              .text('Starts')
             .end();
           updateBackground();
                         
           if ( startDateString ) {
             // TODO: Maybe it starts at midnight even if it hasn't processed the starting scores?
             scheduleDailyStandingsUpdate();            
+            // TODO: Start a countdown timer
           } else {            
             // Check again in an hour to see if the challenge has launched
             window.updateStandingsTimer = setTimeout('updateStandings()', HOUR);
@@ -208,9 +209,10 @@ function updateStandings() {
       scheduleDailyStandingsUpdate();
 
       if (stillGoing) {
-        // TODO: use a class instead of emptying?
-        $('#standings .info:first .emblem').empty();
+        $('#standings').addClass('stillGoing');
         kickOffLiveScoreUpdates(gamers);
+      } else {
+        $('#standings').removeClass('stillGoing');
       }
     }
   });
@@ -350,7 +352,7 @@ function reset() {
 function LoadSettings() {
 	try {
     if (window.System) {
-      var gamertag = System.Gadget.Settings.read("gamertag") || "Vid Boi" || "ChangeAgent";
+      var gamertag = System.Gadget.Settings.read("gamertag") || "ChangeAgent";
       
       window.gamertag = gamertag;
     } else {
