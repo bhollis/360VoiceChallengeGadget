@@ -287,7 +287,7 @@ function kickOffLiveScoreUpdates(gamers) {
 // Every hour. If it fails it'll just get run next hour.
 function updateLiveScore(gamer) {
   $.ajax({
-    url: 'http://duncanmackenzie.net/services/GetXboxInfo.aspx?GamerTag=' + encodeURIComponent(gamer.gamertag),
+    url: 'http://xboxapi.duncanmackenzie.net/gamertag.ashx?GamerTag=' + encodeURIComponent(gamer.gamertag),
     cache: false,
     dataType: 'xml',
     timeout: 30 * SECOND,
@@ -337,12 +337,19 @@ function hideFlyout() {
 // call this at startup / whenever the gamertag is changed
 function reset() {
 	try {
-    $('#loading').show();
-    $('#standings, #timer, #noChallenges, #pendingChallenge').hide();
-    updateBackground();
-    
-		// Refresh    
-    updateStandings();
+    if (!window.gamertag) {
+      $('#notag').show();
+      $('#loading, #standings, #timer, #noChallenges, #pendingChallenge').hide();
+    }
+    else {
+      $('#notag').hide();
+      $('#loading').show();
+      $('#standings, #timer, #noChallenges, #pendingChallenge').hide();
+      updateBackground();
+      
+      // Refresh    
+      updateStandings();
+    }
 	}
 	catch (err) {
 		throw err;
@@ -352,11 +359,9 @@ function reset() {
 function LoadSettings() {
 	try {
     if (window.System) {
-      var gamertag = System.Gadget.Settings.read("gamertag") || "ChangeAgent";
+      var gamertag = System.Gadget.Settings.read("gamertag");
       
       window.gamertag = gamertag;
-    } else {
-      window.gamertag = "Vid Boi";
     }
     
     reset();
