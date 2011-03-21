@@ -14,7 +14,7 @@ included in all copies or substantial portions of the Software.
 
 Any copies or derivitive works must clearly indicate the original 
 author as Benjamin Hollis and include a reference to 
-http://brh.numbera.com/.
+http://benhollis.net/.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES

@@ -31,7 +31,7 @@ function init() {
 
   $('#timer a').click(function() {
     if (window.challengeId) {
-      System.Shell.execute("http://www.360voice.com/challenge/" + encodeURIComponent(window.challengeId));
+      System.Shell.execute("http://360voice.gamerdna.com/challenge/" + encodeURIComponent(window.challengeId));
     }
     return false;
   });
@@ -99,7 +99,7 @@ function checkUpdateStandings() {
   window.checkUpdateTimeout = setTimeout("checkUpdateStandings()", 30 * MINUTE);
   
   $.ajax({
-    url: 'http://www.360voice.com/api/jobs.php',
+    url: 'http://360voice.gamerdna.com/api/jobs.php',
     cache: false,
     timeout: 30 * SECOND,
     dataType: 'xml',
@@ -135,7 +135,7 @@ function updateStandings() {
   window.updateStandingsTimer = setTimeout('updateStandings()', MINUTE);
 
   $.ajax({
-    url: 'http://www.360voice.com/api/challenge-details.asp?tag=' + encodeURIComponent(window.gamertag),
+    url: 'http://360voice.gamerdna.com/api/challenge-details.asp?tag=' + encodeURIComponent(window.gamertag),
     dataType: 'xml',
     cache: false,
     timeout: 30 * SECOND,
@@ -252,7 +252,7 @@ function updateGamerList() {
       '.gamertag': '<a href="#">{gamertag}</a>',
       '.emblem': function(data, elem) {
         if ( data.place == 1 ) {
-          return '<img src="images/crown.png" />';
+          return '<img src="images/crown.png" width="14" height="9" />';
         } else {
           return '';
         }
