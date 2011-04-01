@@ -303,31 +303,31 @@ function updateLiveScore(gamer) {
 }
 
 function updateBackground() {  
-  if ( ! window.System) {
-    return;
-  }
+    if ( ! window.System) {
+        return;
+    }
   
-  var height = $('#container').height() + FOOTER_HEIGHT - 5;
-  $('body').css('height', height);
-	bg.style.height = height;
+    var height = $('#container').height() + FOOTER_HEIGHT - 5;
+    $('body').css('height', height);
+    bg.style.height = height;
 	window.middle.height = height - HEADER_HEIGHT - FOOTER_HEIGHT;
 	
-  // I think this is required or else it goes all screwy.
-	if(window.middle.height % 2 > 0)
-		window.middle.height += 1;
+    // I think this is required or else it goes all screwy.
+    if(window.middle.height % 2 > 0)
+        window.middle.height += 1;
 	
 	//workaround for a bug:
-  // Apparently top is calculated from the middle  of the original image size backwards or something?
+    // Apparently top is calculated from the middle  of the original image size backwards or something?
 	window.middle.top = HEADER_HEIGHT - (MIDDLE_HEIGHT - window.middle.height) / 2;
 	window.footer.top = height - FOOTER_HEIGHT;
 }
 
 function setupFlyout() {
-  if(System.Gadget.Flyout.show) {
-    var flyoutDoc = System.Gadget.Flyout.document;    
-		var gamercard = flyoutDoc.getElementById("gamercard");
-		gamercard.src = "http://gamercard.xbox.com/" + encodeURIComponent(window.selectedGamertag) + ".card";
-  }
+    if(System.Gadget.Flyout.show) {
+        var flyoutDoc = System.Gadget.Flyout.document;    
+        var gamercard = flyoutDoc.getElementById("gamercard");
+        gamercard.src = "http://gamercard.xbox.com/" + encodeURIComponent(window.selectedGamertag) + ".card";
+    }
 }
 
 function hideFlyout() {
@@ -337,19 +337,18 @@ function hideFlyout() {
 // call this at startup / whenever the gamertag is changed
 function reset() {
 	try {
-    if (!window.gamertag) {
-      $('#notag').show();
-      $('#loading, #standings, #timer, #noChallenges, #pendingChallenge').hide();
-    }
-    else {
-      $('#notag').hide();
-      $('#loading').show();
-      $('#standings, #timer, #noChallenges, #pendingChallenge').hide();
-      updateBackground();
-      
-      // Refresh    
-      updateStandings();
-    }
+	    if (!window.gamertag) {
+	      $('#notag').show();
+	      $('#loading, #standings, #timer, #noChallenges, #pendingChallenge').hide();
+	    } else {
+	      $('#notag').hide();
+	      $('#loading').show();
+	      $('#standings, #timer, #noChallenges, #pendingChallenge').hide();
+	      updateBackground();
+	      
+	      // Refresh    
+	      updateStandings();
+        }
 	}
 	catch (err) {
 		throw err;
@@ -358,13 +357,13 @@ function reset() {
 
 function LoadSettings() {
 	try {
-    if (window.System) {
-      var gamertag = System.Gadget.Settings.read("gamertag");
-      
-      window.gamertag = gamertag;
-    }
-    
-    reset();
+        if (window.System) {
+            var gamertag = System.Gadget.Settings.read("gamertag");
+            window.gamertag = gamertag;
+        } else {
+        }
+        
+        reset();
 	}
 	catch (err) {
 		debug.innerHTML = err.description;

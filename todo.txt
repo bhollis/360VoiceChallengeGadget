@@ -1,0 +1,3 @@
+fix display when gamers have no score (also not clickable)
+upgrade jquery
+get rid of gap in separator line
