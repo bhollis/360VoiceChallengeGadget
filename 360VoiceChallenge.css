@@ -72,22 +72,22 @@ body {
   padding: 0;  
 }
 
-#standings .gamertag {
+#standings .tag {
   line-height: 12px;
   font-size: 12px;
   font-weight: bold;
   padding: 3px 0 1px 4px;
 }
-#standings .gamertag a {
+#standings .tag a {
   color: white;
   text-decoration: none;
 }
 
-#standings .gamertag a.selected {
+#standings .tag a.selected {
   color: #C8E3F7;
   text-decoration: underline;
 }
-#standings .gamertag a:hover {
+#standings .tag a:hover {
   text-decoration: underline;
 }
 
@@ -106,7 +106,7 @@ body {
 }
 
 
-#standings .info .livescore {
+#standings .info .livescor {
   color: #2EF38C;
   font-weight: bold;
   padding-right: 5px;

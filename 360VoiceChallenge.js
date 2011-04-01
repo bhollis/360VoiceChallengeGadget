@@ -241,15 +241,14 @@ function updateGamerList() {
   $('#standings')
     .items('replace', window.gamers)
     .chain({
-      '.livescore': function(data, el) {
+      '.livescor': function(data, el) {
         if ( data.livescore ) {
           return '+' + data.livescore;
         } else {
           return '';
         }
       },
-      '.score': '{score}',
-      '.gamertag': '<a href="#">{gamertag}</a>',
+      '.tag a': '{gamertag}',
       '.emblem': function(data, elem) {
         if ( data.place == 1 ) {
           return '<img src="images/crown.png" width="14" height="9" />';
@@ -258,7 +257,7 @@ function updateGamerList() {
         }
       }
     })
-    .find('.gamertag a')
+    .find('.tag a')
       .click(handleGamerClick)
     .end()
     .find('tr:last')
